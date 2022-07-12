@@ -1,7 +1,5 @@
 name: MainWorkFlow
 on:
-  pull_request:
-    branches: [ master ]
   push:
     branches: [ master ]
   # pull_request:
@@ -35,6 +33,8 @@ jobs:
           echo ${{ github.event_name }}
           echo ${{ github.event.action }}
           echo ${{ github.event.pull_request.merged }}
+          echo ${{ github.head_commit.committer.email }}
+          echo ${{ (github.head_commit.committer.email == 'noreply@github.com' && 'プルリク') || 'プルリクじゃないよ' }}
         # (Optional) GitHub Enterprise requires GHE_HOST variable set
         #- name: Set GHE_HOST
         #  run: |
