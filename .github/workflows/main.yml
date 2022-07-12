@@ -2,8 +2,8 @@ name: MainWorkFlow
 on:
   push:
     branches: [ master ]
-  # pull_request:
-    # branches: [ master ]
+  pull_request:
+    branches: [ master ]
     # types: [opened, reopened, synchronize]
     # types: [closed]
   workflow_dispatch:
