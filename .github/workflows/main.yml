@@ -1,5 +1,8 @@
 name: MainWorkFlow
 on:
+  pull_request:
+    branches: [ master ]
+    types: [closed]
   push:
     branches: [ master ]
   # pull_request:
@@ -33,7 +36,6 @@ jobs:
           echo ${{ github.event_name }}
           echo ${{ github.event.action }}
           echo ${{ github.event.pull_request.merged }}
-          echo ${{ toJson(github) }}
         # (Optional) GitHub Enterprise requires GHE_HOST variable set
         #- name: Set GHE_HOST
         #  run: |
