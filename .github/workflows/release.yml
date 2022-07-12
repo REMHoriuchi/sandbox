@@ -3,9 +3,9 @@ on:
   push:
     branches: [ master ]
   # draftを作成する場合は、オートラベルがあった方が便利なので下記のコメントアウトを外す
-  pull_request:
-    branches: [ master ]
-    types: [opened, reopened, synchronize]
+  # pull_request:
+    # branches: [ master ]
+    # types: [opened, reopened, synchronize]
   workflow_dispatch:
 
 permissions:
@@ -24,7 +24,7 @@ jobs:
         # push時はreleaseのdraftを作成。PR作成時はラベルの自動付与を行う
         # PR経由のpushの場合のみ、releaseを作成して公開する
       - uses: release-drafter/release-drafter@v5
-        # if: github.event.head_commit.committer.email == 'noreply@github.com'
+        if: github.event.head_commit.committer.email == 'noreply@github.com'
         with:
           # デフォルトのバージョン
           version: 'v1.0.0'
