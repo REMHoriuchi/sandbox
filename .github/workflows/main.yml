@@ -22,7 +22,7 @@ jobs:
           echo ${{ github.event_name }}
           echo ${{ github.event.action }}
           echo ${{ github.event.pull_request.merged }}
-          ${{ toJson(github) }}
+          echo ${{ toJson(github) }}
         # (Optional) GitHub Enterprise requires GHE_HOST variable set
         #- name: Set GHE_HOST
         #  run: |
