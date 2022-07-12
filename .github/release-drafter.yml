@@ -19,7 +19,7 @@ categories:
     label: 'documentation'
   - title: '⛓️ Dependency update'
     label: 'dependencies'
-  - title: ' GitHub update'
+  - title: '🐱 GitHub update'
     label: 'github'
 
 # 表記テンプレート
