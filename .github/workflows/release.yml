@@ -2,6 +2,10 @@ name: MainWorkFlow
 on:
   push:
     branches: [ master ]
+  # draftを作成する場合は、オートラベルがあった方が便利なので下記のコメントアウトを外す
+  # pull_request:
+  #   branches: [ master ]
+  #   types: [opened, reopened, synchronize]
   workflow_dispatch:
 
 permissions:
@@ -16,10 +20,15 @@ jobs:
     steps:
       - run: |
           echo ${{ (github.event.head_commit.committer.email == 'noreply@github.com' && 'プルリク') || 'プルリクじゃないよ' }}
+
+        # push時はreleaseのdraftを作成。PR作成時はラベルの自動付与を行う
         # PR経由のpushの場合のみ、releaseを作成して公開する
       - if: github.event.head_commit.committer.email == 'noreply@github.com'
         uses: release-drafter/release-drafter@v5
         with:
+          # デフォルトのバージョン
+          version: 'v1.0.0'
+          # releaseの公開設定
           publish: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
