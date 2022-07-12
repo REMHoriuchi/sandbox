@@ -27,7 +27,7 @@ jobs:
         if: github.event.head_commit.committer.email == 'noreply@github.com'
         with:
           # デフォルトのバージョン
-          version: 'v1.0.0'
+          # version: 'v1.0.0'
           # releaseの公開設定
           publish: true
         env:
