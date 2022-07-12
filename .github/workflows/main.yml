@@ -2,10 +2,10 @@ name: MainWorkFlow
 on:
   push:
     branches: [ master ]
-  pull_request:
-    branches: [ master ]
+  # pull_request:
+    # branches: [ master ]
     # types: [opened, reopened, synchronize]
-    types: [closed]
+    # types: [closed]
   workflow_dispatch:
 
 permissions:
@@ -22,6 +22,7 @@ jobs:
           echo ${{ github.event_name }}
           echo ${{ github.event.action }}
           echo ${{ github.event.pull_request.merged }}
+          ${{ toJson(github) }}
         # (Optional) GitHub Enterprise requires GHE_HOST variable set
         #- name: Set GHE_HOST
         #  run: |
