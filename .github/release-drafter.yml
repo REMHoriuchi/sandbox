@@ -45,6 +45,7 @@ template: |
 
   $CHANGES
 
+# ラベルの自動付与
 autolabeler:
   - label: feature
     branch:

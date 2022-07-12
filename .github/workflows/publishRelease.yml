@@ -1,0 +1,25 @@
+name: MainWorkFlow
+on:
+  push:
+    branches: [ master ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  updateReleaseDraft:
+    permissions:
+      contents: write  # for release-drafter/release-drafter to create a github release
+      pull-requests: write  # for release-drafter/release-drafter to add label to PR
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo ${{ (github.event.head_commit.committer.email == 'noreply@github.com' && 'プルリク') || 'プルリクじゃないよ' }}
+        # PR経由のpushの場合のみ、releaseを作成して公開する
+      - if: github.event.head_commit.committer.email == 'noreply@github.com'
+        uses: release-drafter/release-drafter@v5
+        with:
+          publish: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
