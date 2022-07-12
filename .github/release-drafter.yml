@@ -22,7 +22,7 @@ categories:
   - title: ' GitHub update'
     label: 'github'
 
-# 表記んンプレート
+# 表記テンプレート
 change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
 
 change-title-escapes: '\<*_&' # You can add # and @ to disable mentions, and add ` to disable code blocks.
