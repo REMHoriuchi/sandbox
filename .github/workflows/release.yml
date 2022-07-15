@@ -25,7 +25,7 @@ jobs:
         # PR経由のpushの場合のみ、releaseを作成して公開する
       - uses: release-drafter/release-drafter@v5
         #if: github.event.head_commit.committer.email == 'noreply@github.com'
-        with:
+        #with:
           # デフォルトのバージョン最初の1回だけ
           #version: 'v1.0.0'
           # releaseの公開設定
