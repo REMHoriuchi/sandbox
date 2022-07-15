@@ -49,25 +49,25 @@ template: |
 autolabeler:
   - label: feature
     branch:
-      - '/^feat(ure)?[:_-].+/'
+      - '/^feat(ure)?[_-].+/'
   - label: bug
     branch:
-      - '/^fix[:_-].+/'
-      - '/^bug[:_-].+/'
+      - '/^fix[_-].+/'
+      - '/^bug[_-].+/'
   - label: chore
     branch:
-      - '/^chore[:_-].+/'
+      - '/^chore[_-].+/'
   - label: refactor
     branch:
-      - '/^(refactor|refactoring)[:_-].+/'
+      - '/^(refactor|refactoring)[_-].+/'
   - label: documentation
     branch:
-      - '/^doc(umentation)?[:_-].+/'
+      - '/^doc(umentation)?[_-].+/'
     files:
       - '*.md'
   - label: enhancement
     branch:
-      - '/^(enhancement|improve)[:_-].+/'
+      - '/^(enhancement|improve)[_-].+/'
   - label: github
     files:
       - '.github/*'
