@@ -2,7 +2,6 @@ name: MainWorkFlow
 on:
   push:
     branches: [ master ]
-  # draftを作成する場合は、オートラベルがあった方が便利なので下記のコメントアウトを外す
   pull_request:
     branches: [ master ]
     types: [opened, reopened, synchronize]
