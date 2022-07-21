@@ -47,27 +47,30 @@ template: |
 
 # ラベルの自動付与
 autolabeler:
-  - label: feature
-    branch:
-      - '/^feat(ure)?[_-].+/'
   - label: bug
     branch:
-      - '/^fix[_-].+/'
-      - '/^bug[_-].+/'
+      - '/^fix[_-:].+/'
+      - '/^bug[_-:].+/'
   - label: chore
     branch:
-      - '/^chore[_-].+/'
-  - label: refactor
+      - '/^chore[_-:].+/'
+  - label: dependencies
     branch:
-      - '/^(refactor|refactoring)[_-].+/'
+      - '/^depend(encies)?[_-:].+/'
   - label: documentation
     branch:
-      - '/^doc(umentation)?[_-].+/'
+      - '/^doc(umentation)?[_-:].+/'
     files:
       - '*.md'
   - label: enhancement
     branch:
-      - '/^(enhancement|improve)[_-].+/'
+      - '/^(enhancement|improve)[_-:].+/'
+  - label: feature
+    branch:
+      - '/^feat(ure)?[_-:].+/'
   - label: github
     files:
       - '.github/*'
+  - label: refactor
+    branch:
+      - '/^(refactor|refactoring)[_-:].+/'
