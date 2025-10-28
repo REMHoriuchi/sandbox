@@ -125,6 +125,7 @@ jobs:
             5. ${{ env.BASE_BRANCH }} ブランチに対するPull Requestを作成する
 
             **PR作成時の要件:**
+            - 全て日本語で記載すること
             - PR タイトル: "Fix: [Issue #${{ env.ISSUE_NUMBER }}] ${{ env.ISSUE_TITLE }}"
             - PR 説明文に以下を含める:
               - バグの原因と修正内容の説明
