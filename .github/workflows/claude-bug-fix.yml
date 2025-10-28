@@ -119,7 +119,7 @@ jobs:
 
             **タスク:**
             1. ISSUE_CONTEXT.md を読んで、Issue の内容を確認する
-            2. バグの原因を特定する
+            2. バグの原因を特定する（既存のソースコードを分析）
             3. 適切な修正を行う
             4. 修正内容を現在のブランチ (${{ env.FIX_BRANCH }}) にコミットする
             5. ${{ env.BASE_BRANCH }} ブランチに対するPull Requestを作成する
@@ -132,13 +132,14 @@ jobs:
               - テスト方法（もしあれば）
               - `Close #${{ env.ISSUE_NUMBER }}` を記載（issueを自動クローズするため）
 
-            **重要な注意:**
-            - ISSUE_CONTEXT.md ファイルは作業後に削除すること（コミットしない）
-            - 修正内容のコミットには適切なコミットメッセージを付けること
+            **重要な制約:**
+            - ISSUE_CONTEXT.md ファイルは削除すること（コミットしない）
+            - コミットメッセージは適切に付けること
 
             修正が完了したら、作成したPRのURLを教えてください。
 
-          claude_args: '--allowed-tools Bash(gh pr:*) Bash(gh issue:*)'
+          # 修正対象のファイルを指定
+          claude_args: '--allowed-tools Bash(gh pr:*) --allowed-files "**/*.php" "**/*.js" "**/*.ts" "**/*.jsx" "**/*.tsx" "**/*.py" "**/*.html" "**/*.css" "**/*.scss" "**/*.vue" "**/*.java" "**/*.go" "**/*.rb" "**/*.rs" "**/*.md"'
 
           additional_permissions: |
             contents: write
