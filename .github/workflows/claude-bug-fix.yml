@@ -73,16 +73,12 @@ jobs:
 
             // Issue情報をMarkdownファイルとして保存
             const fs = require('fs');
-            const issueContent = `# Issue #${issue.number}: ${issue.title}
-
-**作成者:** @${issue.user.login}
-**状態:** ${issue.state}
-**ラベル:** ${issue.labels.map(l => l.name).join(', ')}
-
-## 説明
-
-${issueBody}
-`;
+            const issueContent = '# Issue #' + issue.number + ': ' + issue.title + '\n\n' +
+              '**作成者:** @' + issue.user.login + '\n' +
+              '**状態:** ' + issue.state + '\n' +
+              '**ラベル:** ' + issue.labels.map(l => l.name).join(', ') + '\n\n' +
+              '## 説明\n\n' +
+              issueBody + '\n';
 
             fs.writeFileSync('ISSUE_CONTEXT.md', issueContent);
 
