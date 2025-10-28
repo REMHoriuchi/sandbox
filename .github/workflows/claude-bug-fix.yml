@@ -138,8 +138,8 @@ jobs:
 
             修正が完了したら、作成したPRのURLを教えてください。
 
-          # 修正対象のファイルを指定
-          claude_args: '--allowed-tools Bash(gh pr:*) --allowed-files "**/*.php" "**/*.js" "**/*.ts" "**/*.jsx" "**/*.tsx" "**/*.py" "**/*.html" "**/*.css" "**/*.scss" "**/*.vue" "**/*.java" "**/*.go" "**/*.rb" "**/*.rs" "**/*.md"'
+          # ファイル書き込みとghコマンドを自動承認
+          claude_args: '--allowedTools "Write" "Edit" "Read" "Bash(gh pr:*)" "Bash(gh issue:*)"'
 
           additional_permissions: |
             contents: write
