@@ -23,7 +23,7 @@ jobs:
     permissions:
       contents: write        # コードの修正とコミットに必要
       pull-requests: write   # PR作成に必要
-      issues: read          # issueの内容を読むために必要
+      issues: write          # issueの読み取りとコメント追加に必要
       id-token: write       # OAuth認証に必要
 
     steps:
