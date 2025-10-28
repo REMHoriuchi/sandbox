@@ -1,0 +1,102 @@
+name: Claude Bug Fix
+
+on:
+  issues:
+    types: [opened, edited, labeled]
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: 'Issue number to fix'
+        required: true
+        type: number
+      base_branch:
+        description: 'Base branch for PR (default: master)'
+        required: false
+        type: string
+        default: 'master'
+
+jobs:
+  auto-fix-bug:
+    # bugラベルが付いているissueの場合のみ実行
+    if: contains(github.event.issue.labels.*.name, 'bug') || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write        # コードの修正とコミットに必要
+      pull-requests: write   # PR作成に必要
+      issues: read          # issueの内容を読むために必要
+      id-token: write       # OAuth認証に必要
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # PR作成のため全履歴を取得
+
+      - name: Create fix branch
+        run: |
+          BASE_BRANCH="${{ inputs.base_branch || 'master' }}"
+          ISSUE_NUMBER="${{ github.event.issue.number || inputs.issue_number }}"
+          FIX_BRANCH="fix/issue-${ISSUE_NUMBER}"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # ベースブランチから新しいブランチを作成
+          git fetch origin "${BASE_BRANCH}"
+          git checkout -b "${FIX_BRANCH}" "origin/${BASE_BRANCH}"
+          git push -u origin "${FIX_BRANCH}"
+
+          # 環境変数に保存
+          echo "FIX_BRANCH=${FIX_BRANCH}" >> $GITHUB_ENV
+          echo "BASE_BRANCH=${BASE_BRANCH}" >> $GITHUB_ENV
+          echo "ISSUE_NUMBER=${ISSUE_NUMBER}" >> $GITHUB_ENV
+
+      - name: Run Claude Code to fix bug
+        id: claude
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets[format('{0}_CLAUDE_CODE_OAUTH_TOKEN', github.actor)] }}
+
+          prompt: |
+            Issue #${{ env.ISSUE_NUMBER }} に報告されたバグを修正してください。
+
+            **タスク:**
+            1. Issue の内容を確認し、バグの原因を特定してください
+            2. 適切な修正を行ってください
+            3. 修正内容を現在のブランチ (${{ env.FIX_BRANCH }}) にコミットしてください
+            4. ${{ env.BASE_BRANCH }} ブランチに対するPull Requestを作成してください
+
+            **PR作成時の注意:**
+            - PR タイトル: "Fix: [Issue #${{ env.ISSUE_NUMBER }}] {バグの概要}"
+            - PR 説明文に以下を含めてください:
+              - 修正内容の説明
+              - テスト方法
+              - Close #${{ env.ISSUE_NUMBER }} (issueを自動クローズするため)
+
+            修正が完了したら、作成したPRのURLを教えてください。
+
+          additional_permissions: |
+            contents: write
+            pull-requests: write
+
+      - name: Comment on issue
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issue_number = ${{ env.ISSUE_NUMBER }};
+            const status = '${{ steps.claude.outcome }}';
+
+            let comment_body;
+            if (status === 'success') {
+              comment_body = `✅ Claudeによるバグ修正が完了しました！\n\nブランチ: \`${{ env.FIX_BRANCH }}\`\nベースブランチ: \`${{ env.BASE_BRANCH }}\`\n\n作成されたPull Requestを確認してください。`;
+            } else {
+              comment_body = `❌ バグ修正中にエラーが発生しました。\n\n[Actionsログを確認](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})してください。`;
+            }
+
+            github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue_number,
+              body: comment_body
+            });
