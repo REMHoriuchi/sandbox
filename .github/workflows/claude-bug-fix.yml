@@ -138,8 +138,8 @@ jobs:
 
             修正が完了したら、作成したPRのURLを教えてください。
 
-          # ファイル書き込みとghコマンドを自動承認
-          claude_args: '--allowedTools "Write" "Edit" "Read" "Bash(gh pr:*)" "Bash(gh issue:*)"'
+          # ファイル書き込み、git、ghコマンドを自動承認
+          claude_args: '--allowedTools "Write" "Edit" "Read" "Bash(git *)" "Bash(gh pr:*)" "Bash(gh issue:*)"'
 
           additional_permissions: |
             contents: write
