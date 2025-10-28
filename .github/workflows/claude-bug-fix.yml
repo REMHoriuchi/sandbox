@@ -164,36 +164,28 @@ jobs:
 
             // Issue情報取得で失敗した場合
             if (error_message) {
-              comment_body = `⚠️ **自動バグ修正を開始できませんでした**
-
-**理由:**
-${error_message}
-
-Issue内容を追記してから、再度\`bug\`ラベルを付け直すか、手動でワークフローを実行してください。
-
-[Actionsログを確認](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})`;
+              comment_body = '⚠️ **自動バグ修正を開始できませんでした**\n\n' +
+                '**理由:**\n' + error_message + '\n\n' +
+                'Issue内容を追記してから、再度`bug`ラベルを付け直すか、手動でワークフローを実行してください。\n\n' +
+                '[Actionsログを確認](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})';
             }
             // Claude実行が成功した場合
             else if (claude_status === 'success') {
-              comment_body = `✅ **Claudeによるバグ修正が完了しました！**
-
-**ブランチ:** \`${{ env.FIX_BRANCH }}\`
-**ベースブランチ:** \`${{ env.BASE_BRANCH }}\`
-
-作成されたPull Requestを確認してください。`;
+              comment_body = '✅ **Claudeによるバグ修正が完了しました！**\n\n' +
+                '**ブランチ:** `${{ env.FIX_BRANCH }}`\n' +
+                '**ベースブランチ:** `${{ env.BASE_BRANCH }}`\n\n' +
+                '作成されたPull Requestを確認してください。';
             }
             // Claude実行が失敗した場合
             else if (claude_status === 'failure') {
-              comment_body = `❌ **バグ修正中にエラーが発生しました**
-
-Claudeによる修正処理中に問題が発生しました。
-[Actionsログを確認](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})して、エラーの詳細を確認してください。`;
+              comment_body = '❌ **バグ修正中にエラーが発生しました**\n\n' +
+                'Claudeによる修正処理中に問題が発生しました。\n' +
+                '[Actionsログを確認](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})して、エラーの詳細を確認してください。';
             }
             // その他のエラー
             else {
-              comment_body = `⚠️ **ワークフロー実行中に問題が発生しました**
-
-[Actionsログを確認](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})してください。`;
+              comment_body = '⚠️ **ワークフロー実行中に問題が発生しました**\n\n' +
+                '[Actionsログを確認](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})してください。';
             }
 
             await github.rest.issues.createComment({
