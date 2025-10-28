@@ -138,12 +138,10 @@ jobs:
 
             修正が完了したら、作成したPRのURLを教えてください。
 
-          # ファイル書き込み、git、ghコマンドを自動承認
-          claude_args: '--allowedTools "Write" "Edit" "Read" "Bash(git *)" "Bash(gh pr:*)" "Bash(gh issue:*)"'
-
-          additional_permissions: |
-            contents: write
-            pull-requests: write
+          claude_args: |
+            --max-turns 30
+            --permission-mode bypassPermissions
+            --model claude-sonnet-4-5-20250929
 
       - name: Cleanup
         if: always()
